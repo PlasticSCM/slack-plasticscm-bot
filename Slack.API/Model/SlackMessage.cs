@@ -29,5 +29,8 @@ public class SlackMessage
 
     [JsonProperty("team")]
     public string Team { get; set; }
+
+    [JsonProperty("mrkdwn")]
+    public bool MarkDown { get; set; }
 }
 }

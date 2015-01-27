@@ -17,14 +17,19 @@ using WebSocketSharp;
     public class SlackRTMService : ISlackRTMService
     {
         private const string RtmStart = "https://slack.com/api/rtm.start?token={0}";
+        private const int TimerInterval = 25000;
+        private const int MaxLength = 800;
+        private const string JsonOpenResponse = @"{{""id"" : {0}, ""type"" : ""ping""}}";
+        private const string LatestBranches = "latest branches";
+        private const string LatestChangesets = "latest changesets";
         private const string InvalidMessage =
-            "Could you ask again? I didn't understand you :(";
+            @"Could you ask again? I didn't understand you :pensive:
+These are the commands I understand:
+> `plastic latest changesets`
+> `plastic latest branches`";
         private const string WaitMessage = @"As you wish, my lord.
 Please wait while I gather the required information.
-You can take a look at thiz purfffect picturez meanwhile... 
-http://bit.ly/cuteSCMkitty";
-        private const int TimerInterval = 25000;
-        private const string JsonOpenResponse = @"{{""id"" : {0}, ""type"" : ""ping""}}";
+I assure you, this will only take a moment.";
 
         private readonly IPlasticCMDService plasticService;
 
@@ -118,19 +123,31 @@ http://bit.ly/cuteSCMkitty";
 
         private void ProcessMessageForPlastic(WebSocket socket, SlackMessage messageReceived)
         {
+            if (!IsValidCommand(messageReceived.Text))
+            {
+                SendMessage(socket, messageReceived, InvalidMessage);
+                return;
+            }
+
             SendMessage(socket, messageReceived, WaitMessage);
 
-            string cmdResult = QueryServer(messageReceived.Text);
+            string queryResult = QueryServer(messageReceived.Text);
 
-            SendMessage(socket, messageReceived, TrimResponse(cmdResult));
+            SendMessage(socket, messageReceived, TrimResponse(queryResult));
+        }
+
+        private bool IsValidCommand(string requestedCommand)
+        {
+            return requestedCommand.ToLowerInvariant().Contains(LatestBranches)
+                || requestedCommand.ToLowerInvariant().Contains(LatestChangesets);
         }
 
         private string QueryServer(string requestedCommand)
         {
-            if (requestedCommand.ToLowerInvariant().Contains("latest branches"))
+            if (requestedCommand.ToLowerInvariant().Contains(LatestBranches))
                 return this.plasticService.GetLatestBranches();
 
-            if (requestedCommand.ToLowerInvariant().Contains("latest changesets"))
+            if (requestedCommand.ToLowerInvariant().Contains(LatestChangesets))
                 return this.plasticService.GetLatestChangesets();
 
             return InvalidMessage;
@@ -138,11 +155,14 @@ http://bit.ly/cuteSCMkitty";
 
         private string TrimResponse(string response)
         {
-            if (response.Length <= 800)
+            if (response.Length <= MaxLength)
                 return response;
-            string result = response.Substring(response.Length - 796, 796);
-            result = result.Substring(result.IndexOf("\n"));
-            return result;
+
+            string firstLine = response.Substring(0, response.IndexOf('\n') + 1);
+            int bodyLength = MaxLength - firstLine.Length;
+            string body = response.Substring(response.Length - bodyLength, bodyLength);
+            body = body.Substring(body.IndexOf("\n"));
+            return firstLine + body;
         }
 
         private static void SendMessage(WebSocket socket, SlackMessage messageReceived, string cmdResult)
