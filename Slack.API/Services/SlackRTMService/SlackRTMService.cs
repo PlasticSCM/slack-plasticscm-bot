@@ -19,6 +19,7 @@ using WebSocketSharp;
         private const string RtmStart = "https://slack.com/api/rtm.start?token={0}";
         private const int TimerInterval = 25000;
         private const int MaxLength = 800;
+        private const int OverflowInterval = 10000000;
         private const string JsonOpenResponse = @"{{""id"" : {0}, ""type"" : ""ping""}}";
         private const string LatestBranches = "latest branches";
         private const string LatestChangesets = "latest changesets";
@@ -29,11 +30,14 @@ These are the commands I understand:
 > `plastic latest branches`";
         private const string WaitMessage = @"As you wish, my lord.
 Please wait while I gather the required information.
-I assure you, this will only take a moment.";
+I assure you, this will only take a moment. :suspect:";
+        private const string OverflowMessage =
+            "*Whoa, whoa!* :worried: What are you doing? Give me some space here, will you? :hurtrealbad:";
 
         private readonly IPlasticCMDService plasticService;
 
         private Timer timer;
+        private long mLastCommandTimestamp = DateTime.Now.Ticks;
 
         public event EventHandler<SlackEventArgs> SlackDataReceived;
 
@@ -123,6 +127,12 @@ I assure you, this will only take a moment.";
 
         private void ProcessMessageForPlastic(WebSocket socket, SlackMessage messageReceived)
         {
+            if ((DateTime.Now.Ticks - mLastCommandTimestamp) < OverflowInterval)
+            {
+                SendMessage(socket, messageReceived, OverflowMessage);
+                return;
+            }
+
             if (!IsValidCommand(messageReceived.Text))
             {
                 SendMessage(socket, messageReceived, InvalidMessage);
@@ -134,6 +144,8 @@ I assure you, this will only take a moment.";
             string queryResult = QueryServer(messageReceived.Text);
 
             SendMessage(socket, messageReceived, TrimResponse(queryResult));
+
+            mLastCommandTimestamp = DateTime.Now.Ticks;
         }
 
         private bool IsValidCommand(string requestedCommand)
