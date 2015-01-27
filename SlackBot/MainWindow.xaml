@@ -1,0 +1,9 @@
+﻿<Window x:Class="SlackBot.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525"
+        DataContext="{Binding MainVM, Source={StaticResource Locator}}">
+    <Grid>
+        <TextBox x:Name="TextLog" Text="{Binding Messages}" AcceptsReturn="True"></TextBox>
+    </Grid>
+</Window>

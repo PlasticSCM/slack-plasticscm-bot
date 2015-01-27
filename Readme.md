@@ -1,0 +1,1 @@
+A sample bot to interact with PlasticSCM from slack
