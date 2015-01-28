@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using SlackBot.Portable.Services;
+﻿using SlackBot.Portable.Services;
 using SlackBot.Viewmodels.Base;
-
 
 namespace SlackBot.Viewmodels
 {

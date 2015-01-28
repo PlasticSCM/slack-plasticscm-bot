@@ -1,18 +1,13 @@
 ﻿namespace SlackBot.Portable.Services
 {
-    using Codice.CmdRunner;
-using Newtonsoft.Json;
-using Slack.API.Services;
-using SlackBot.Portable.Model;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using WebSocketSharp;
+    using Newtonsoft.Json;
+    using Slack.API.Services;
+    using SlackBot.Portable.Model;
+    using System;
+    using System.IO;
+    using System.Net;
+    using System.Threading;
+    using WebSocketSharp;
 
     public class SlackRTMService : ISlackRTMService
     {

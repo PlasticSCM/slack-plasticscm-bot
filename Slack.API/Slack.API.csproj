@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac">
-      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
-    </Reference>
     <Reference Include="CmdRunner">
       <HintPath>..\packages\CMDRunner\CmdRunner.dll</HintPath>
     </Reference>
@@ -42,11 +39,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="WebSocketSharp">
       <HintPath>..\packages\websocket-sharp.clone.1.0.2.0\lib\Net45\WebSocketSharp.dll</HintPath>
     </Reference>
