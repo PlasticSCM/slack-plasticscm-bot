@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlackBot", "SlackBot\SlackBot.csproj", "{871D1F61-E506-4BCD-BA7B-45362B4F2FB8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Slack.API", "Slack.API\Slack.API.csproj", "{0EB9435E-6937-4F4B-9FA4-788C02F3AAAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlasticSlackBotCli", "PlasticSlackBotCli\PlasticSlackBotCli.csproj", "{A8A85059-BE0A-4D02-B51F-C2C98183E39C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{0EB9435E-6937-4F4B-9FA4-788C02F3AAAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EB9435E-6937-4F4B-9FA4-788C02F3AAAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EB9435E-6937-4F4B-9FA4-788C02F3AAAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8A85059-BE0A-4D02-B51F-C2C98183E39C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8A85059-BE0A-4D02-B51F-C2C98183E39C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8A85059-BE0A-4D02-B51F-C2C98183E39C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8A85059-BE0A-4D02-B51F-C2C98183E39C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
