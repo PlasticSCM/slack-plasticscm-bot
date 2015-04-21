@@ -5,5 +5,7 @@
         string GetLatestChangesets();
 
         string GetLatestBranches();
+
+        string GetLicenseInfo();
     }
 }

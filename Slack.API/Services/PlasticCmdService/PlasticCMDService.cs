@@ -28,5 +28,12 @@
             string cmdResult = CmdRunner.ExecuteCommandWithStringResult(command, Environment.CurrentDirectory, false);
             return string.Format("Latest branches on repository `{0}`: \r\n {1}", Repository, cmdResult);
         }
+
+        public string GetLicenseInfo()
+        {
+            string command = "cm li";
+            string cmdResult = CmdRunner.ExecuteCommandWithStringResult(command, Environment.CurrentDirectory, false);
+            return string.Format("License information: \r\n {0}", cmdResult);
+        }
     }
 }
