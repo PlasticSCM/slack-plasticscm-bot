@@ -29,16 +29,16 @@ I assure you, this will only take a moment. :suspect:";
         private const string OverflowMessage =
             "*Whoa, whoa!* :worried: What are you doing? Give me some space here, will you? :hurtrealbad:";
 
-        private readonly IPlasticCMDService plasticService;
+        private readonly IChatInterpreter chatInterpreter;
 
         private Timer timer;
         private long mLastCommandTimestamp = DateTime.Now.Ticks;
 
         public event EventHandler<SlackEventArgs> SlackDataReceived;
 
-        public SlackRTMService(IPlasticCMDService plasticService)
+        public SlackRTMService(IChatInterpreter chatInterpreter)
         {
-            this.plasticService = plasticService;
+            this.chatInterpreter = chatInterpreter;
         }
 
         public void ConnectPlasticSlackBot(string botToken)
@@ -145,19 +145,12 @@ I assure you, this will only take a moment. :suspect:";
 
         private bool IsValidCommand(string requestedCommand)
         {
-            return requestedCommand.ToLowerInvariant().Contains(LatestBranches)
-                || requestedCommand.ToLowerInvariant().Contains(LatestChangesets);
+            return chatInterpreter.IsValidCommand(requestedCommand);
         }
 
         private string QueryServer(string requestedCommand)
         {
-            if (requestedCommand.ToLowerInvariant().Contains(LatestBranches))
-                return this.plasticService.GetLatestBranches();
-
-            if (requestedCommand.ToLowerInvariant().Contains(LatestChangesets))
-                return this.plasticService.GetLatestChangesets();
-
-            return InvalidMessage;
+            return chatInterpreter.ProcessCommand(requestedCommand);
         }
 
         private string TrimResponse(string response)

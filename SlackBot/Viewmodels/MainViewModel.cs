@@ -6,7 +6,7 @@ namespace SlackBot.Viewmodels
 
     public class MainViewModel : VMBase
     {
-        private const string BotToken = "xoxb-3421343744-ayq92tRV13G2StTqMR8GFCvJ";
+        private const string BotToken = "xoxb-4517302904-wTZFndQZruwSoXA8L8eYwa96";
 
         private readonly ISlackRTMService slackService;
 

@@ -15,6 +15,7 @@ namespace SlackBot.Viewmodels.Base
             ContainerBuilder builder = new ContainerBuilder();
 
             builder.RegisterType<PlasticCMDService>().As<IPlasticCMDService>().SingleInstance();
+            builder.RegisterType<ChatInterpreter>().As<IChatInterpreter>().SingleInstance();
             builder.RegisterType<SlackRTMService>().As<ISlackRTMService>().SingleInstance();
             builder.RegisterType<MainViewModel>();
 

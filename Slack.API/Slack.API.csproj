@@ -45,15 +45,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\AuthTestResponse.cs" />
+    <Compile Include="Model\Commands\BaseCommand.cs" />
+    <Compile Include="Model\Commands\PlasticCommand.cs" />
     <Compile Include="Model\RtmStartResponse.cs" />
     <Compile Include="Model\SlackEventArgs.cs" />
     <Compile Include="Model\SlackMessage.cs" />
     <Compile Include="Model\StandardResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ChatInterpreter.cs" />
+    <Compile Include="Services\IChatInterpreter.cs" />
     <Compile Include="Services\PlasticCmdService\IPlasticCMDService.cs" />
     <Compile Include="Services\PlasticCmdService\PlasticCMDService.cs" />
     <Compile Include="Services\SlackRTMService\ISlackRTMService.cs" />
     <Compile Include="Services\SlackRTMService\SlackRTMService.cs" />
+    <Compile Include="Util\Options.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

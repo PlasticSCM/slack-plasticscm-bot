@@ -19,7 +19,9 @@ namespace PlasticSlackBotCli
 
             PlasticCMDService plasticCmd = new PlasticCMDService();
 
-            SlackRTMService service = new SlackRTMService(plasticCmd);
+            ChatInterpreter chatInterpreter = new ChatInterpreter(plasticCmd);
+
+            SlackRTMService service = new SlackRTMService(chatInterpreter);
 
             service.SlackDataReceived += slackService_SlackDataReceived;
 
