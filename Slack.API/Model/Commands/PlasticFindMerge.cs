@@ -18,7 +18,8 @@ namespace Slack.API.Model.Commands
         private bool help;
         private static string helpStr =
             @"`plastic find merge -dstbranch=/main`
-`plastic find merge -srcbranch=/main/task001`";
+`plastic find merge -srcbranch=/main/task001`
+`plastic find merge [h | help]`";
 
         public PlasticFindMerge(string requestedCommand)
         {

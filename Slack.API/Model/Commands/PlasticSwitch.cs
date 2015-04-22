@@ -23,7 +23,8 @@ namespace Slack.API.Model.Commands
         private string destination;
 
         private static string helpStr =
-@"`plastic switch [rep | repository] to=repname` (see `plastic list rep`)";
+@"`plastic switch [rep | repository] to=repname` (see `plastic list rep`)
+`plastic switch [h | help]`";
 
         public PlasticSwitch(string requestedCommand)
         {

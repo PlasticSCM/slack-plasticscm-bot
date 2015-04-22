@@ -51,6 +51,7 @@
 
         public string SwitchToRepository(string requestedRepo)
         {
+            // TODO check if new repo exists.
             repository = requestedRepo;
             return string.Format("Switched to repository `{0}`", requestedRepo);
         }
