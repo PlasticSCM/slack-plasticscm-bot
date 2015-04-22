@@ -10,7 +10,6 @@ namespace Slack.API.Services
 {
     public class ChatInterpreter : IChatInterpreter
     {
-        private OptionSet plasticCommands;
         private const string LatestBranches = "latest branches";
         private const string LatestChangesets = "latest changesets";
         private const string InvalidMessage =
@@ -42,6 +41,15 @@ These are the commands I understand:
             if (requestedCommand.StartsWith("plastic li"))
                 result = plasticService.GetLicenseInfo();
 
+            if (requestedCommand.StartsWith("plastic switch"))
+                result = ProcessPlasticSwitch(requestedCommand);
+
+            if (requestedCommand.StartsWith("plastic find merge"))
+                result = ProcessPlasticFindMerge(requestedCommand);
+
+            if (requestedCommand.StartsWith("plastic list"))
+                result = ProcessPlasticList(requestedCommand);
+
             return result == null ? InvalidMessage : result;
         }
 
@@ -58,6 +66,57 @@ These are the commands I understand:
             if (result.Length != 0)
                 return result.ToString();
             return null;
+        }
+
+        private string ProcessPlasticSwitch(string requestedCommand)
+        {
+            PlasticSwitch command = new PlasticSwitch(requestedCommand);
+            StringBuilder result = new StringBuilder();
+            if (command.IsToRepository())
+                result.Append(plasticService.SwitchToRepository(command.GetDestination()));
+
+            if (command.IsHelp())
+                result.Append(PlasticSwitch.GetHelp());
+
+            if (result.Length != 0)
+                return result.ToString();
+            return PlasticSwitch.GetHelp();
+        }
+
+        private string ProcessPlasticFindMerge(string requestedCommand)
+        {
+            PlasticFindMerge command = new PlasticFindMerge(requestedCommand);
+            StringBuilder result = new StringBuilder();
+            if (command.IsSrcBranch())
+                result.Append(plasticService.FindMergeFromSrc(command.GetSrcBranch()));
+
+            if (command.IsDstBranch())
+                result.Append(plasticService.FindMergeFromDst(command.GetDstBranch()));
+
+            if (command.IsHelp())
+                result.Append(PlasticFindMerge.getHelp());
+
+            if (result.Length != 0)
+                return result.ToString();
+            return PlasticFindMerge.getHelp();
+        }
+
+        private string ProcessPlasticList(string requestedCommand)
+        {
+            PlasticList command = new PlasticList(requestedCommand);
+            StringBuilder result = new StringBuilder();
+            if (command.IsRepositories())
+                result.Append(plasticService.ListRepositories());
+
+            if (command.IsLabels())
+                result.Append(plasticService.ListLabels());
+
+            if (command.IsHelp())
+                result.Append(PlasticList.GetHelp());
+
+            if (result.Length != 0)
+                return result.ToString();
+            return PlasticList.GetHelp();
         }
     }
 }
