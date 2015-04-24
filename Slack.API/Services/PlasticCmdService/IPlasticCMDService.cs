@@ -19,5 +19,7 @@
         string ListRepositories();
 
         string ListLabels();
+
+        string ListLabelsInBranch(string requestedBranch);
     }
 }

@@ -20,17 +20,20 @@
             @"on _{{date}}_ by *{{owner}}*: {{comment}}"" --dateformat=""{1}"" --nototal";
         private const string FindMergeFromSrcCommand =
             @"cm find merge where srcbranch='{0}' on repositories '{1}' --format=" +
-            @""">[`{{srcbranch}}@{{srcchangeset}}` *--->* `{{dstbranch}}@{{dstchangeset}}`] {{type}} on _{{date}}_ by *{{owner}}*"" " +
-            @"--dateformat=""{2}"" --nototal";
+            @""">[`{{srcbranch}}@{{srcchangeset}}` *--->* `{{dstbranch}}@{{dstchangeset}}`] " +
+            @"{{type}} on _{{date}}_ by *{{owner}}*"" --dateformat=""{2}"" --nototal";
         private const string FindMergeFromDstCommand =
             @"cm find merge where dstbranch='{0}' on repositories '{1}' --format=" +
-            @""">[`{{srcbranch}}@{{srcchangeset}}` *--->* `{{dstbranch}}@{{dstchangeset}}`] {{type}} on _{{date}}_ by *{{owner}}*"" " +
-            @"--dateformat=""{2}"" --nototal";
+            @""">[`{{srcbranch}}@{{srcchangeset}}` *--->* `{{dstbranch}}@{{dstchangeset}}`] "+
+            @"{{type}} on _{{date}}_ by *{{owner}}*"" --dateformat=""{2}"" --nototal";
         private const string ListReposCommand =
             @"cm lrep --format="">`#{0} - {1}`""";
         private const string ListLabelsCommand =
             @"cm find labels on repositories '{0}' --format="">[`{{name}}`] on " +
             @"_{{date}}_ by *{{owner}}*"" --nototal --dateformat=""{1}""";
+        private const string ListLabelsInBranchCommand =
+            @"cm find labels where branch='{0}' on repositories '{1}' --format="">[`{{name}}`] on " +
+            @"_{{date}}_ by *{{owner}}*"" --dateformat=""{2}"" --nototal";
 
         public string GetLatestChangesets()
         {
@@ -102,6 +105,14 @@
             string cmdResult = CmdRunner.ExecuteCommandWithStringResult(command, Environment.CurrentDirectory, false);
             Console.WriteLine(command + " : " + cmdResult);
             return string.Format("Labels found on `{0}`: \r\n{1}", repository, cmdResult);
+        }
+
+        public string ListLabelsInBranch(string requestedBranch)
+        {
+            string command = string.Format(ListLabelsInBranchCommand, requestedBranch, repository, DateFormat);
+            string cmdResult = CmdRunner.ExecuteCommandWithStringResult(command, Environment.CurrentDirectory, false);
+            Console.WriteLine(command + " : " + cmdResult);
+            return string.Format("Labels found on `{0}@{1}`: \r\n{2}", requestedBranch, repository, cmdResult);
         }
     }
 }

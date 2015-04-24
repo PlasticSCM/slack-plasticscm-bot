@@ -114,7 +114,14 @@ These are the commands I understand (type command name + ""h"" or ""help"" to ge
                 result.Append(plasticService.ListRepositories());
 
             if (command.LabelsRequested())
-                result.Append(plasticService.ListLabels());
+            {
+                if (!command.LabelsInBranchRequested())
+                    result.Append(plasticService.ListLabels());
+
+                else
+                    result.Append(plasticService.ListLabelsInBranch(command.BranchRequested()));
+            }
+                
 
             if (command.HelpRequested())
                 result.Append(PlasticList.GetHelp());

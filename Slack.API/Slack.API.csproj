@@ -48,7 +48,6 @@
     <Compile Include="Model\Commands\BaseCommand.cs" />
     <Compile Include="Model\Commands\PlasticLatest.cs" />
     <Compile Include="Model\Commands\PlasticList.cs" />
-    <Compile Include="Model\Commands\PlasticRename.cs" />
     <Compile Include="Model\Commands\PlasticSwitch.cs" />
     <Compile Include="Model\RtmStartResponse.cs" />
     <Compile Include="Model\SlackEventArgs.cs" />
