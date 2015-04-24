@@ -11,6 +11,10 @@
             @"cm find changesets on repositories '{0}' --format=" +
             @""">[`cs:{{changesetid}}@br:{{branch}}`] on _{{date}}_ by " +
             @"*{{owner}}*: {{comment}}"" --dateformat=""{1}"" --nototal";
+        private const string FindChangesetsOnBranchCommand =
+            @"cm find changesets where branch='{0}' on repositories '{1}' --format=" +
+            @""">[`cs:{{changesetid}}@br:{{branch}}`] on _{{date}}_ by " +
+            @"*{{owner}}*: {{comment}}"" --dateformat=""{2}"" --nototal";
         private const string FindBranchesCommand =
             @"cm find branch on repositories '{0}' --format="">[`br:{{name}}`] " +
             @"on _{{date}}_ by *{{owner}}*: {{comment}}"" --dateformat=""{1}"" --nototal";
@@ -35,6 +39,14 @@
             return string.Format("Latest changesets on repository `{0}`: \r\n {1}", repository, cmdResult);
         }
 
+        public string GetLatestChangesetsFromBranch(string requestedBranch)
+        {
+            string command = string.Format(FindChangesetsOnBranchCommand, requestedBranch, repository, DateFormat);
+            string cmdResult = CmdRunner.ExecuteCommandWithStringResult(command, Environment.CurrentDirectory, false);
+            Console.WriteLine(command + " : " + cmdResult);
+            return string.Format("Latest changesets on `{0}@{1}`: \r\n{2}", requestedBranch, repository, cmdResult);
+        }
+
         public string GetLatestBranches()
         {
             string command = string.Format(FindBranchesCommand, repository, DateFormat);
@@ -51,9 +63,14 @@
 
         public string SwitchToRepository(string requestedRepo)
         {
-            // TODO check if new repo exists.
-            repository = requestedRepo;
-            return string.Format("Switched to repository `{0}`", requestedRepo);
+            string cmdResult = CmdRunner.ExecuteCommandWithStringResult(ListReposCommand, Environment.CurrentDirectory, false);
+            if (!cmdResult.Contains(requestedRepo))
+                return string.Format(":cold_sweat: Could you repeat? I couldn't find `{0}`", requestedRepo);
+            else
+            {
+                repository = requestedRepo;
+                return string.Format("Switched to repository `{0}`", requestedRepo);
+            }
         }
 
         public string FindMergeFromSrc(string requestedSrc)
@@ -61,7 +78,7 @@
             string command = string.Format(FindMergeFromSrcCommand, requestedSrc, repository, DateFormat);
             string cmdResult = CmdRunner.ExecuteCommandWithStringResult(command, Environment.CurrentDirectory, false);
             Console.WriteLine(command + " : " + cmdResult);
-            return string.Format("Merges found with source `{0}@{1}`: \r\n{2}", requestedSrc, repository, cmdResult);
+            return string.Format("Latest merges found with source `{0}@{1}`: \r\n{2}", requestedSrc, repository, cmdResult);
         }
 
         public string FindMergeFromDst(string requestedDst)
@@ -69,7 +86,7 @@
             string command = string.Format(FindMergeFromDstCommand, requestedDst, repository, DateFormat);
             string cmdResult = CmdRunner.ExecuteCommandWithStringResult(command, Environment.CurrentDirectory, false);
             Console.WriteLine(command + " : " + cmdResult);
-            return string.Format("Merges found with destination `{0}@{1}`: \r\n{2}", requestedDst, repository, cmdResult);
+            return string.Format("Latest merges found with destination `{0}@{1}`: \r\n{2}", requestedDst, repository, cmdResult);
         }
 
         public string ListRepositories()

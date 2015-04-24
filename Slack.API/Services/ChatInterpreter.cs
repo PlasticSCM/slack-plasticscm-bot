@@ -14,10 +14,11 @@ namespace Slack.API.Services
         private const string LatestChangesets = "latest changesets";
         private const string InvalidMessage =
             @"Could you ask again? I didn't understand you :pensive:
-These are the commands I understand:
-> `plastic latest changesets`
-> `plastic latest branches`
-> `plastic li`";
+These are the commands I understand (type command name + ""h"" or ""help"" to get, well, you know, help.):
+> `plastic latest`
+> `plastic latest`
+> `plastic switch`
+> `plastic list`";
         private readonly IPlasticCMDService plasticService;
 
         public ChatInterpreter(IPlasticCMDService plasticService)
@@ -32,6 +33,11 @@ These are the commands I understand:
                 || requestedCommand.ToLowerInvariant().Contains(LatestChangesets);
         }
 
+        public string GetInvalidMessageResponse()
+        {
+            return InvalidMessage;
+        }
+
         public string ProcessCommand(string requestedCommand)
         {
             string result = null;
@@ -43,9 +49,6 @@ These are the commands I understand:
 
             if (requestedCommand.StartsWith("plastic switch"))
                 result = ProcessPlasticSwitch(requestedCommand);
-
-            if (requestedCommand.StartsWith("plastic find merge"))
-                result = ProcessPlasticFindMerge(requestedCommand);
 
             if (requestedCommand.StartsWith("plastic list"))
                 result = ProcessPlasticList(requestedCommand);
@@ -61,11 +64,31 @@ These are the commands I understand:
                 result.Append(plasticService.GetLatestBranches());
 
             if (command.ChangesetsRequested())
-                result.Append(plasticService.GetLatestChangesets());
+            {
+                if (!command.ChangesetsFromBranchRequested())
+                    result.Append(plasticService.GetLatestChangesets());
+                else
+                {
+                    string requestedBranch = command.GetRequestedBranch();
+                    result.Append(plasticService.GetLatestChangesetsFromBranch(requestedBranch));
+                }
+            }
 
+            if (command.MergesRequested())
+            {
+                if (command.SourceBranchRequested())
+                    result.Append(plasticService.FindMergeFromSrc(command.GetRequestedSrcBranch()));
+
+                if (command.DestinationBranchRequested())
+                    result.Append(plasticService.FindMergeFromDst(command.GetRequestedDstBranch()));
+            }
+
+            if (command.HelpRequested())
+                result.Append(PlasticLatest.GetHelp());
+                
             if (result.Length != 0)
                 return result.ToString();
-            return null;
+            return PlasticLatest.GetHelp();
         }
 
         private string ProcessPlasticSwitch(string requestedCommand)
@@ -83,35 +106,17 @@ These are the commands I understand:
             return PlasticSwitch.GetHelp();
         }
 
-        private string ProcessPlasticFindMerge(string requestedCommand)
-        {
-            PlasticFindMerge command = new PlasticFindMerge(requestedCommand);
-            StringBuilder result = new StringBuilder();
-            if (command.IsSrcBranch())
-                result.Append(plasticService.FindMergeFromSrc(command.GetSrcBranch()));
-
-            if (command.IsDstBranch())
-                result.Append(plasticService.FindMergeFromDst(command.GetDstBranch()));
-
-            if (command.IsHelp())
-                result.Append(PlasticFindMerge.getHelp());
-
-            if (result.Length != 0)
-                return result.ToString();
-            return PlasticFindMerge.getHelp();
-        }
-
         private string ProcessPlasticList(string requestedCommand)
         {
             PlasticList command = new PlasticList(requestedCommand);
             StringBuilder result = new StringBuilder();
-            if (command.IsRepositories())
+            if (command.RepositoriesRequested())
                 result.Append(plasticService.ListRepositories());
 
-            if (command.IsLabels())
+            if (command.LabelsRequested())
                 result.Append(plasticService.ListLabels());
 
-            if (command.IsHelp())
+            if (command.HelpRequested())
                 result.Append(PlasticList.GetHelp());
 
             if (result.Length != 0)

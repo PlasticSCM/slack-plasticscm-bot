@@ -4,6 +4,8 @@
     {
         string GetLatestChangesets();
 
+        string GetLatestChangesetsFromBranch(string requestedBranch);
+
         string GetLatestBranches();
 
         string GetLicenseInfo();

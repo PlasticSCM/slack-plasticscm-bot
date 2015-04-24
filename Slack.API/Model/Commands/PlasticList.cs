@@ -28,17 +28,17 @@ namespace Slack.API.Model.Commands
             }.Parse(args);
         }
 
-        public bool IsRepositories()
+        public bool RepositoriesRequested()
         {
             return repositories;
         }
 
-        public bool IsLabels()
+        public bool LabelsRequested()
         {
             return labels;
         }
 
-        public bool IsHelp()
+        public bool HelpRequested()
         {
             return help;
         }

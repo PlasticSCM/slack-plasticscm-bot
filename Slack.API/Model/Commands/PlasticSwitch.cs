@@ -7,10 +7,7 @@ using System.Threading.Tasks;
 
 // Example of use:
 //
-// plastic switch label -to=Baseline1.2
-// plastic switch branch -to=/main/task001
-// plastic switch changeset -to=27
-// plastic switch repository -to=documentacion
+// plastic switch repository to=documentacion
 namespace Slack.API.Model.Commands
 {
     class PlasticSwitch : BaseCommand

@@ -11,5 +11,7 @@ namespace Slack.API.Services
         bool IsValidCommand(string requestedCommand);
 
         string ProcessCommand(string requestedCommand);
+
+        string GetInvalidMessageResponse();
     }
 }

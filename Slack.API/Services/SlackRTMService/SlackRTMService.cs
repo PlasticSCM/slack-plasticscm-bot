@@ -18,11 +18,6 @@
         private const string JsonOpenResponse = @"{{""id"" : {0}, ""type"" : ""ping""}}";
         private const string LatestBranches = "latest branches";
         private const string LatestChangesets = "latest changesets";
-        private const string InvalidMessage =
-            @"Could you ask again? I didn't understand you :pensive:
-These are the commands I understand:
-> `plastic latest changesets`
-> `plastic latest branches`";
         private const string WaitMessage = @"As you wish, my lord.
 Please wait while I gather the required information.
 I assure you, this will only take a moment. :suspect:";
@@ -130,7 +125,7 @@ I assure you, this will only take a moment. :suspect:";
 
             if (!IsValidCommand(messageReceived.Text))
             {
-                SendMessage(socket, messageReceived, InvalidMessage);
+                SendMessage(socket, messageReceived, chatInterpreter.GetInvalidMessageResponse());
                 return;
             }
 

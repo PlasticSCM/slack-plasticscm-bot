@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="Model\AuthTestResponse.cs" />
     <Compile Include="Model\Commands\BaseCommand.cs" />
-    <Compile Include="Model\Commands\PlasticFindMerge.cs" />
     <Compile Include="Model\Commands\PlasticLatest.cs" />
     <Compile Include="Model\Commands\PlasticList.cs" />
     <Compile Include="Model\Commands\PlasticRename.cs" />
