@@ -29,10 +29,10 @@
         private const string ListReposCommand =
             @"cm lrep --format="">`#{0} - {1}`""";
         private const string ListLabelsCommand =
-            @"cm find labels on repositories '{0}' --format="">[`{{name}}`] on " +
+            @"cm find labels on repositories '{0}' --format="">[`lb:{{name}}@br:{{branch}}`] on " +
             @"_{{date}}_ by *{{owner}}*"" --nototal --dateformat=""{1}""";
         private const string ListLabelsInBranchCommand =
-            @"cm find labels where branch='{0}' on repositories '{1}' --format="">[`{{name}}`] on " +
+            @"cm find labels where branch='{0}' on repositories '{1}' --format="">[`lb:{{name}}`] on " +
             @"_{{date}}_ by *{{owner}}*"" --dateformat=""{2}"" --nototal";
 
         public string GetLatestChangesets()

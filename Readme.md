@@ -59,17 +59,24 @@ Lists available repositories in the server.
 
 > `#{N} - {Repo name}`
 
-### 2.2. `plastic list [lb | labels]`
+### 2.2. `plastic list [lb | labels] [br=? | branch=?]`
 Lists the latest labels created in the repo
 
 >`plastic list lb`
 
 >Labels found on `osTicket`:  
->[`version0.1`] on _abr 12 at 19:32_ by __sergio__  
->[`version0.2`] on _abr 23 at 13:14_ by __sergio__  
->[`version0.3`] on _abr 23 at 17:06_ by __sergio__
+>[`lb:version0.1@br:/main`] on _abr 12 at 19:32_ by __sergio__  
+>[`lb:version0.2@br:/main`] on _abr 23 at 13:14_ by __sergio__  
+>[`lb:version0.3@br:/main`] on _abr 23 at 17:06_ by __sergio__
 
->[`name`] on _{date}_ by __{owner}__
+>`plastic list lb br=main`
+
+>Labels found on `main@osTicket`:  
+>[`lb:version0.1`] on _abr 12 at 19:32_ by __sergio__  
+>[`lb:version0.2`] on _abr 23 at 13:14_ by __sergio__  
+>[`lb:version0.3`] on _abr 23 at 17:06_ by __sergio__
+
+>[`lb:name@br:branch`] on _{date}_ by __{owner}__
 
 ## 3. `plastic switch`
 Currently it only supports one kind of switch. It is not a bind to a `cm` command.
