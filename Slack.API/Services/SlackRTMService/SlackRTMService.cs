@@ -123,7 +123,7 @@ I assure you, this will only take a moment. :suspect:";
                 return;
             }
 
-            if (!IsValidCommand(messageReceived.Text))
+            if (!IsValidCommand(messageReceived.Text.ToLowerInvariant()))
             {
                 SendMessage(socket, messageReceived, chatInterpreter.GetInvalidMessageResponse());
                 return;

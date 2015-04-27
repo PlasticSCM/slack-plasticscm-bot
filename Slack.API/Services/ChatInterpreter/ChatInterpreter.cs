@@ -10,12 +10,12 @@ namespace Slack.API.Services
 {
     public class ChatInterpreter : IChatInterpreter
     {
-        private const string LatestBranches = "latest branches";
-        private const string LatestChangesets = "latest changesets";
+        private const string Latest = "latest";
+        private const string Switch = "switch";
+        private const string List = "list";
         private const string InvalidMessage =
             @"Could you ask again? I didn't understand you :pensive:
 These are the commands I understand (type command name + ""h"" or ""help"" to get, well, you know, help.):
-> `plastic latest`
 > `plastic latest`
 > `plastic switch`
 > `plastic list`";
@@ -28,9 +28,9 @@ These are the commands I understand (type command name + ""h"" or ""help"" to ge
 
         public bool IsValidCommand(string requestedCommand)
         {
-            return true;
-            return requestedCommand.ToLowerInvariant().Contains(LatestBranches)
-                || requestedCommand.ToLowerInvariant().Contains(LatestChangesets);
+            return requestedCommand.Contains(Latest)
+                || requestedCommand.Contains(Switch)
+                || requestedCommand.Contains(List);
         }
 
         public string GetInvalidMessageResponse()
