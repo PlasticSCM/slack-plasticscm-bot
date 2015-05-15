@@ -11,26 +11,6 @@
 
     public class SlackRTMService : ISlackRTMService
     {
-        private const string RtmStart = "https://slack.com/api/rtm.start?token={0}";
-        private const int TimerInterval = 25000;
-        private const int MaxLength = 800;
-        private const int OverflowInterval = 10000000;
-        private const string JsonOpenResponse = @"{{""id"" : {0}, ""type"" : ""ping""}}";
-        private const string LatestBranches = "latest branches";
-        private const string LatestChangesets = "latest changesets";
-        private const string WaitMessage = @"As you wish, my lord.
-Please wait while I gather the required information.
-I assure you, this will only take a moment. :suspect:";
-        private const string OverflowMessage =
-            "*Whoa, whoa!* :worried: What are you doing? Give me some space here, will you? :hurtrealbad:";
-
-        private readonly IChatInterpreter chatInterpreter;
-
-        private Timer timer;
-        private long mLastCommandTimestamp = DateTime.Now.Ticks;
-
-        public event EventHandler<SlackEventArgs> SlackDataReceived;
-
         public SlackRTMService(IChatInterpreter chatInterpreter)
         {
             this.chatInterpreter = chatInterpreter;
@@ -54,7 +34,7 @@ I assure you, this will only take a moment. :suspect:";
             ConnectWebSocket(rtmStartResponse);
         }
 
-        private void ConnectWebSocket(RtmStartResponse rtmStartResponse)
+        void ConnectWebSocket(RtmStartResponse rtmStartResponse)
         {
             if (rtmStartResponse == null || string.IsNullOrEmpty(rtmStartResponse.RtmUrl))
                 return;
@@ -115,7 +95,7 @@ I assure you, this will only take a moment. :suspect:";
                 || !receivedResponse.ToLowerInvariant().StartsWith("plastic");
         }
 
-        private void ProcessMessageForPlastic(WebSocket socket, SlackMessage messageReceived)
+        void ProcessMessageForPlastic(WebSocket socket, SlackMessage messageReceived)
         {
             if ((DateTime.Now.Ticks - mLastCommandTimestamp) < OverflowInterval)
             {
@@ -138,17 +118,17 @@ I assure you, this will only take a moment. :suspect:";
             mLastCommandTimestamp = DateTime.Now.Ticks;
         }
 
-        private bool IsValidCommand(string requestedCommand)
+        bool IsValidCommand(string requestedCommand)
         {
             return chatInterpreter.IsValidCommand(requestedCommand);
         }
 
-        private string QueryServer(string requestedCommand)
+        string QueryServer(string requestedCommand)
         {
             return chatInterpreter.ProcessCommand(requestedCommand);
         }
 
-        private string TrimResponse(string response)
+        string TrimResponse(string response)
         {
             if (response.Length <= MaxLength)
                 return response;
@@ -160,7 +140,7 @@ I assure you, this will only take a moment. :suspect:";
             return firstLine + body;
         }
 
-        private static void SendMessage(WebSocket socket, SlackMessage messageReceived, string cmdResult)
+        static void SendMessage(WebSocket socket, SlackMessage messageReceived, string cmdResult)
         {
             SlackMessage response = new SlackMessage()
             {
@@ -174,5 +154,24 @@ I assure you, this will only take a moment. :suspect:";
             string msg = JsonConvert.SerializeObject(response);
             socket.Send(msg);
         }
+
+        const string RtmStart = "https://slack.com/api/rtm.start?token={0}";
+        const int TimerInterval = 25000;
+        const int MaxLength = 800;
+        const int OverflowInterval = 10000000;
+        const string JsonOpenResponse = @"{{""id"" : {0}, ""type"" : ""ping""}}";
+        const string LatestBranches = "latest branches";
+        const string LatestChangesets = "latest changesets";
+        const string WaitMessage = @"As you wish, my lord.
+Please wait while I gather the required information.
+I assure you, this will only take a moment. :suspect:";
+        const string OverflowMessage =
+            "*Whoa, whoa!* :worried: What are you doing? Give me some space here, will you? :hurtrealbad:";
+
+        readonly IChatInterpreter chatInterpreter;
+
+        Timer timer;
+        long mLastCommandTimestamp = DateTime.Now.Ticks;
+        public event EventHandler<SlackEventArgs> SlackDataReceived;
     }
 }

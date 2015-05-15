@@ -1,23 +1,9 @@
 ﻿using Mono.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Slack.API.Model.Commands
 {
     public class PlasticList : BaseCommand
     {
-        private bool repositories;
-        private bool labels;
-        private string branch;
-        private bool help;
-        private static string helpStr =
-            @"`plastic list [rep | repositories]`
-`plastic list [lb | labels] [br=? | branch=?]`
-`plastic list [h | help]`";
-
         public PlasticList(string requestedCommand)
         {
             string[] args = ExtractArgs(requestedCommand);
@@ -59,5 +45,15 @@ namespace Slack.API.Model.Commands
         {
             return helpStr;
         }
+
+        bool repositories;
+        bool labels;
+        string branch;
+        bool help;
+        static string helpStr =
+            @"`plastic list [rep | repositories]`
+`plastic list [lb | labels] [br=? | branch=?]`
+`plastic list [h | help]`";
+
     }
 }

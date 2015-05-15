@@ -1,28 +1,9 @@
 ﻿using Mono.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-// Example of use:
-//
-// plastic switch repository to=documentacion
 namespace Slack.API.Model.Commands
 {
     class PlasticSwitch : BaseCommand
     {
-        private bool toLabel;
-        private bool toChangeset;
-        private bool toBranch;
-        private bool toRepository;
-        private bool help;
-        private string destination;
-
-        private static string helpStr =
-@"`plastic switch [rep | repository] to=repname` (see `plastic list rep`)
-`plastic switch [h | help]`";
-
         public PlasticSwitch(string requestedCommand)
         {
             string[] args = ExtractArgs(requestedCommand);
@@ -71,5 +52,17 @@ namespace Slack.API.Model.Commands
         {
             return destination;
         }
+
+        bool toLabel;
+        bool toChangeset;
+        bool toBranch;
+        bool toRepository;
+        bool help;
+        string destination;
+
+        static string helpStr =
+@"`plastic switch [rep | repository] to=repname` (see `plastic list rep`)
+`plastic switch [h | help]`";
+
     }
 }

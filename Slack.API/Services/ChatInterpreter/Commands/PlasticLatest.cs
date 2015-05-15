@@ -1,28 +1,9 @@
 ﻿using Mono.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Slack.API.Model.Commands
 {
     public class PlasticLatest : BaseCommand
     {
-        bool branches;
-        bool changesets;
-        bool merges;
-        string srcbranch;
-        string dstbranch;
-        string branch;
-        bool help;
-        static string helpStr =
-
-@"> `plastic latest branches`
-> `plastic latest changesets [br=<branch>]`
-> `plastic latest merges { src=? / srcbranch=? | dst= / dstbranch=?}`
-> `plastic latest [h | help]`";
-
         public PlasticLatest(string requestedCommand)
         {
             string[] args = ExtractArgs(requestedCommand);
@@ -91,5 +72,20 @@ namespace Slack.API.Model.Commands
         {
             return helpStr;
         }
+
+        bool branches;
+        bool changesets;
+        bool merges;
+        string srcbranch;
+        string dstbranch;
+        string branch;
+        bool help;
+        static string helpStr =
+
+@"> `plastic latest branches`
+> `plastic latest changesets [br=<branch>]`
+> `plastic latest merges { src=? / srcbranch=? | dst= / dstbranch=?}`
+> `plastic latest [h | help]`";
+
     }
 }

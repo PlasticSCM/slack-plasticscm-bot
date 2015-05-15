@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="Model\AuthTestResponse.cs" />
     <Compile Include="Services\ChatInterpreter\Commands\BaseCommand.cs" />
+    <Compile Include="Services\ChatInterpreter\Commands\PlasticBranchHistory.cs" />
+    <Compile Include="Services\ChatInterpreter\Commands\PlasticHal.cs" />
     <Compile Include="Services\ChatInterpreter\Commands\PlasticLatest.cs" />
     <Compile Include="Services\ChatInterpreter\Commands\PlasticList.cs" />
     <Compile Include="Services\ChatInterpreter\Commands\PlasticSwitch.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="Services\SlackRTMService\ISlackRTMService.cs" />
     <Compile Include="Services\SlackRTMService\SlackRTMService.cs" />
     <Compile Include="Util\Options.cs" />
+    <Compile Include="Util\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,26 +1,11 @@
-﻿using Mono.Options;
+﻿using System.Text;
+
 using Slack.API.Model.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Slack.API.Services
 {
     public class ChatInterpreter : IChatInterpreter
     {
-        private const string Latest = "latest";
-        private const string Switch = "switch";
-        private const string List = "list";
-        private const string InvalidMessage =
-            @"Could you ask again? I didn't understand you :pensive:
-These are the commands I understand (type command name + ""h"" or ""help"" to get, well, you know, help.):
-> `plastic latest`
-> `plastic switch`
-> `plastic list`";
-        private readonly IPlasticCMDService plasticService;
-
         public ChatInterpreter(IPlasticCMDService plasticService)
         {
             this.plasticService = plasticService;
@@ -30,7 +15,9 @@ These are the commands I understand (type command name + ""h"" or ""help"" to ge
         {
             return requestedCommand.Contains(Latest)
                 || requestedCommand.Contains(Switch)
-                || requestedCommand.Contains(List);
+                || requestedCommand.Contains(List)
+                || requestedCommand.Contains(Branchhistory)
+                || requestedCommand.Contains(Hal);
         }
 
         public string GetInvalidMessageResponse()
@@ -53,10 +40,16 @@ These are the commands I understand (type command name + ""h"" or ""help"" to ge
             if (requestedCommand.StartsWith("plastic list"))
                 result = ProcessPlasticList(requestedCommand);
 
+            if (requestedCommand.StartsWith("plastic branchhistory"))
+                result = ProcessBranchHistory(requestedCommand);
+
+            if (requestedCommand.StartsWith("plastic hal"))
+                result = ProcessReleasebuilderStatus(requestedCommand);
+
             return result == null ? InvalidMessage : result;
         }
 
-        private string ProcessPlasticLatest(string requestedCommand)
+        string ProcessPlasticLatest(string requestedCommand)
         {
             PlasticLatest command = new PlasticLatest(requestedCommand);
             StringBuilder result = new StringBuilder();
@@ -91,7 +84,7 @@ These are the commands I understand (type command name + ""h"" or ""help"" to ge
             return PlasticLatest.GetHelp();
         }
 
-        private string ProcessPlasticSwitch(string requestedCommand)
+        string ProcessPlasticSwitch(string requestedCommand)
         {
             PlasticSwitch command = new PlasticSwitch(requestedCommand);
             StringBuilder result = new StringBuilder();
@@ -106,7 +99,7 @@ These are the commands I understand (type command name + ""h"" or ""help"" to ge
             return PlasticSwitch.GetHelp();
         }
 
-        private string ProcessPlasticList(string requestedCommand)
+        string ProcessPlasticList(string requestedCommand)
         {
             PlasticList command = new PlasticList(requestedCommand);
             StringBuilder result = new StringBuilder();
@@ -130,5 +123,52 @@ These are the commands I understand (type command name + ""h"" or ""help"" to ge
                 return result.ToString();
             return PlasticList.GetHelp();
         }
+
+        string ProcessBranchHistory(string requestedCommand)
+        {
+            PlasticBranchHistory command = new PlasticBranchHistory(requestedCommand);
+            string branch = command.GetBranch();
+            string repository = command.GetRepository();
+
+            if (branch == null || branch.Length == 0 || command.IsHelp())
+                return PlasticBranchHistory.GetHelp();
+
+            if (command.IsSpecificRepository())
+                return plasticService.BranchHistory(branch, repository);
+
+            return plasticService.BranchHistory(branch);
+        }
+
+        string ProcessReleasebuilderStatus(string requestedCommand)
+        {
+            PlasticHal command = new PlasticHal(requestedCommand);
+            StringBuilder result = new StringBuilder();
+
+            if (command.StatusRequested())
+                result.Append(plasticService.HalStatus());
+
+            if (command.HelpRequested())
+                result.Append(PlasticHal.GetHelp());
+
+            if (result.Length != 0)
+                return result.ToString();
+            return PlasticHal.GetHelp();
+        }
+
+        const string Latest = "latest";
+        const string Switch = "switch";
+        const string List = "list";
+        const string Branchhistory = "branchhistory";
+        const string Hal = "hal";
+        const string InvalidMessage =
+            @"Could you ask again? I didn't understand you :pensive:
+These are the commands I understand (type command name + ""h"" or ""help"" to get, well, you know, help.):
+> `plastic latest`
+> `plastic switch`
+> `plastic list`
+> `plastic branchhistory`
+> `plastic hal`";
+        readonly IPlasticCMDService plasticService;
+
     }
 }

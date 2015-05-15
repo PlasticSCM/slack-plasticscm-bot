@@ -21,5 +21,11 @@
         string ListLabels();
 
         string ListLabelsInBranch(string requestedBranch);
+
+        string BranchHistory(string requestedBranch);
+
+        string BranchHistory(string requestedBranch, string requestedRep);
+
+        string HalStatus();
     }
 }

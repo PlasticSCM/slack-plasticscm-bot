@@ -1,10 +1,12 @@
 # PlasticBot
-###### A bridge between Slack and PlasticSCM `cm` utility
+###### A bridge between Slack and Plastic/HAL
 -------------------------------------------------------
 ### Available commands
 1. `plastic latest` 
 2. `plastic list`
 3. `plastic switch`  
+4. `plastic branchhistory`
+5. `plastic hal`
 
 ------------------
 
@@ -89,3 +91,65 @@ It will check if you're trying to switch to a non-existent repository. If everyt
 
 >`plastic switch rep to=osTicket`  
 >Switched to repository `osTicket`
+
+## 4. `plastic branchhistory {br=? | branch=?} [rep=? | repository=?]`
+Shows the recent history of a branch in current repository. With the `repository` flag you can select another repo.
+
+>`plastic branchhistory br=/main`  
+...will show the last three items in the history of `br:/main` of the current repository.
+
+>`plastic branchhistory br=/main rep=otherRep`  
+...will show the last three items in the history of `br:/main` of `otherRep` repository.
+
+```
+----------------
+Type: Merge from
+Base changeset (interval merge only): 
+Source changeset: 40@/main/developer
+Destination changeset: 41 (0.2)
+Merge type: Merge
+Owner: sergio
+Date: abr 23 at 13:11
+----------------
+Type: Merge from
+Base changeset (interval merge only): 
+Source changeset: 48@/main/developer
+Destination changeset: 49
+Merge type: Merge
+Owner: sergio
+Date: abr 23 at 17:05
+----------------
+Type: Merge to
+Base changeset (interval merge only): 
+Source changeset: 50 (0.3)
+Destination changeset: 51@/main/developer
+Merge type: Cherry pick
+Owner: sergio
+Date: abr 23 at 17:18
+----------------
+```
+
+## 5. `plastic hal [status]`
+It does the same as `hal releasebuilder status current`
+
+```
+Building debug mode 5.4.16.664      OK (00:03:22)
+
+  Updating source code                OK (00:00:28)
+
+                                        Branch /main/Release-5.4.16.664@server:8087
+
+                                        Cset   cs:96172@rep:codice@repserver:server:8087
+
+  Cleaning testdata directories       OK (00:00:01)
+
+  Build debug mode                    OK (00:02:52)
+
+    Building pnunit                     OK (00:00:29)
+
+    Building licensetools               OK (00:00:03)
+
+    Building PlasticSCM debug           OK (00:02:17)
+
+    Setup nunit tests input directory   OK (00:00:01)
+```
